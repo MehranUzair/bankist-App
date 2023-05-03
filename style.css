@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #444;
   background-color: #f3f3f3;
   height: 100vh;
@@ -94,7 +94,7 @@ nav {
   gap: 2rem;
 
   /* NOTE This creates the fade in/out anumation */
-  opacity: 0;
+  /* opacity: 0; */
   transition: all 1s;
 }
 
@@ -295,3 +295,118 @@ h2 {
 .timer {
   font-weight: 600;
 }
+/* -------------------------------------- */
+/* .button {
+  font-family: inherit;
+  display: inline-block;
+  position: relative;
+  border-radius: 100px;
+  background: #007cc1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  padding: 8px 30px 8px 95px;
+  text-align: center;
+  text-decoration: none;
+}
+.button:before {
+  content: '';
+  position: absolute;
+  font-size: 36px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  line-height: 63px;
+  text-align: center;
+  background-color: greenyellow;
+  width: 75px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding-left: 8px;
+}
+.button span:first-child {
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  line-height: 1;
+  padding-top: 4px;
+}
+.button b {
+  display: block;
+  font-size: 14px;
+}
+.button span:last-child {
+  display: block;
+  font-size: 12px;
+}
+.button:hover {
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  background: #0270ad;
+} */
+
+/* <a href="https://wa.me/971562951952"> 
+<div class="flex">
+<div class="img-border"> <img src="https://www.uaebuggytour.com/wp-content/uploads/2023/04/whatsapp.png" width="25px"> </div>
+<div class="content">
+<span class="before-icon"> + (971) 562 951 952 </span>
+<span class="small-text">Call us for Booking Information</span>
+</div>
+</div>
+</a>
+ */
+
+/* css
+ selector { 
+    max-width: 280px;
+    text-align: center;
+}
+
+selector a {
+    position: relative;
+    display: inline-block;
+    color: white;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+selector a:hover {
+    background: none;
+}
+selector a span {
+    padding:0;
+    margin: 0;
+}
+selector a span {
+    display: block;
+}
+
+
+selector a .small-text{
+    font-size: 12px;
+    font-weight: 400;
+}
+selector .flex {
+    display: flex;
+    align-items: center;
+}
+
+selector .img-border{
+    border-right: 1px solid #ff5a5a;
+    margin-right: 5px
+}
+
+selector .img-border img
+{
+    margin-right:10px;
+    display: block;
+    
+}
+
+selector .content {margin-left: 5px;}
+
+
+ */
