@@ -29,8 +29,14 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
 };
+const account5 = {
+  owner: 'Mehran Uzair',
+  movements: [430, 5000, -10000, 50, 90, -1500, 50000],
+  interestRate: 1,
+  pin: 5555,
+};
 
-const accounts = [account1, account2, account3, account4];
+const accounts = [account1, account2, account3, account4, account5];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -76,3 +82,17 @@ const displayMovements = movements => {
   });
 };
 displayMovements(account1.movements);
+
+const createUsername = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsername(accounts);
+
+console.log(accounts);
