@@ -95,4 +95,9 @@ const createUsername = function (accs) {
 
 createUsername(accounts);
 
-console.log(accounts);
+const printCalcBalance = movs => {
+  const balance = movs.reduce((acc, cru) => acc + cru, 0);
+  labelBalance.textContent = `${balance} $`;
+};
+
+printCalcBalance(account1.movements);
