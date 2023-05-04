@@ -119,16 +119,20 @@ TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
 GOOD LUCK 😀
 */
 
-const TestData1 = [5, 2, 4, 1, 15, 8, 3];
-const TestData2 = [16, 6, 10, 5, 6, 1, 4];
+// const TestData1 = [5, 2, 4, 1, 15, 8, 3];
+// const TestData2 = [16, 6, 10, 5, 6, 1, 4];
 
-const calcAverageHumanAge = dogAges => {
-  const dogAgeInHuman = dogAges.map(age => {
-    const humanAge = age <= 2 ? 2 * age : (16 + age) * 4;
+// const calcAverageHumanAge = dogAges => {
+//   const dogAgeInHuman = dogAges.map(age => {
+//     const humanAge = age <= 2 ? 2 * age : (16 + age) * 4;
 
-    return humanAge;
-  });
-  return dogAgeInHuman;
-};
+//     return humanAge;
+//   });
+//   const filteredDogs = dogAgeInHuman.filter(dogs => dogs > 18);
 
-console.log(calcAverageHumanAge(TestData1));
+//   const avgDogs =
+//     filteredDogs.reduce((acc, cur) => acc + cur, 0) / filteredDogs.length;
+//   return avgDogs;
+// };
+
+// console.log(calcAverageHumanAge(TestData1));
