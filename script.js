@@ -64,6 +64,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+//Todo Display Movements Function
 const displayMovements = movements => {
   containerMovements.innerHTML = '';
   movements.forEach((mov, i) => {
@@ -75,14 +76,16 @@ const displayMovements = movements => {
       i + 1
     } ${type}</div>
           <div class="movements__date">3 days ago</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov} €</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 displayMovements(account1.movements);
+// ! ========================================== ;
 
+// Todo Creating UserName Function
 const createUsername = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -95,6 +98,10 @@ const createUsername = function (accs) {
 
 createUsername(accounts);
 
+// !=========================
+
+// Todo Calculating & Printing Total Balance
+
 const printCalcBalance = movs => {
   const balance = movs.reduce((acc, cru) => acc + cru, 0);
   labelBalance.textContent = `${balance} $`;
@@ -102,26 +109,37 @@ const printCalcBalance = movs => {
 
 printCalcBalance(account1.movements);
 
+// !==========================
+
+// todo Deposit, Withdrwal & Interest Balance Functions
 const depositBalance = movements => {
   const depositMovements = movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-
-  return depositMovements;
+  labelSumIn.textContent = `${depositMovements} €`;
 };
-
-labelSumIn.textContent = depositBalance(account1.movements);
-
+// ! ======================
 const withdrawalBalance = movements => {
   const withdrawlMovements = movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${withdrawlMovements} €`;
+};
+// ! ======================
+const calcInterest = mov => {
+  const interest = mov
+    .filter(deposit => deposit > 0)
+    .map(deposit => (deposit * account1.interestRate) / 100)
+    .reduce((acc, mov) => acc + mov, 0);
 
-  return withdrawlMovements;
+  labelSumInterest.textContent = `${interest} €`;
 };
 
-labelSumOut.textContent = withdrawalBalance(account1.movements);
+calcInterest(account1.movements);
+withdrawalBalance(account1.movements);
+depositBalance(account1.movements);
 
+// ! ======================
 /* 
 Coding Challenge #2
 Let's go back to Julia and Kate's study about dogs. This time, they want to convert dog ages to human ages and calculate the average age of the dogs in their study.
