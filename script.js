@@ -107,8 +107,6 @@ const printCalcBalance = movs => {
   labelBalance.textContent = `${balance} $`;
 };
 
-printCalcBalance(account1.movements);
-
 // !==========================
 
 // todo Deposit, Withdrwal & Interest Balance Functions
@@ -135,8 +133,27 @@ const calcInterest = mov => {
   labelSumInterest.textContent = `${interest} €`;
 };
 
-calcInterest(account1.movements);
-withdrawalBalance(account1.movements);
-depositBalance(account1.movements);
-
 // ! ======================
+
+// Todo Login Functionality
+
+let currentAccount;
+btnLogin.addEventListener('click', e => {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent = `Welcome Back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+
+    containerApp.style.opacity = 100;
+
+    printCalcBalance(currentAccount.movements);
+    calcInterest(currentAccount.movements);
+    withdrawalBalance(currentAccount.movements);
+    depositBalance(currentAccount.movements);
+  }
+});
