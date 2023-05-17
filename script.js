@@ -65,95 +65,23 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 //Todo Display Movements Function
-const displayMovements = movements => {
-  containerMovements.innerHTML = '';
-  movements.forEach((mov, i) => {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const html = `
-    <div class="movements__row">
-          <div class="movements__type movements__type--${type}">${
-      i + 1
-    } ${type}</div>
-          <div class="movements__date">3 days ago</div>
-          <div class="movements__value">${mov} €</div>
-        </div>
-    `;
-    containerMovements.insertAdjacentHTML('afterbegin', html);
-  });
-};
-displayMovements(account1.movements);
 // ! ========================================== ;
 
 // Todo Creating UserName Function
-const createUsername = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.owner
-      .toLowerCase()
-      .split(' ')
-      .map(name => name[0])
-      .join('');
-  });
-};
-
-createUsername(accounts);
 
 // !=========================
 
 // Todo Calculating & Printing Total Balance
 
-const printCalcBalance = movs => {
-  const balance = movs.reduce((acc, cru) => acc + cru, 0);
-  labelBalance.textContent = `${balance} $`;
-};
-
 // !==========================
 
 // todo Deposit, Withdrwal & Interest Balance Functions
-const depositBalance = movements => {
-  const depositMovements = movements
-    .filter(mov => mov > 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${depositMovements} €`;
-};
-// ! ======================
-const withdrawalBalance = movements => {
-  const withdrawlMovements = movements
-    .filter(mov => mov < 0)
-    .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${withdrawlMovements} €`;
-};
-// ! ======================
-const calcInterest = mov => {
-  const interest = mov
-    .filter(deposit => deposit > 0)
-    .map(deposit => (deposit * account1.interestRate) / 100)
-    .reduce((acc, mov) => acc + mov, 0);
 
-  labelSumInterest.textContent = `${interest} €`;
-};
+// ! ======================
+
+// ! ======================
 
 // ! ======================
 
 // Todo Login Functionality
-
-let currentAccount;
-btnLogin.addEventListener('click', e => {
-  e.preventDefault();
-  currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
-  );
-
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
-    labelWelcome.textContent = `Welcome Back, ${
-      currentAccount.owner.split(' ')[0]
-    }`;
-
-    containerApp.style.opacity = 100;
-
-    printCalcBalance(currentAccount.movements);
-    calcInterest(currentAccount.movements);
-    withdrawalBalance(currentAccount.movements);
-    depositBalance(currentAccount.movements);
-  }
-});
