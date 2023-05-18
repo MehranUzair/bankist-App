@@ -86,6 +86,20 @@ displayMovements(account1.movements);
 // ! ========================================== ;
 // Todo Creating UserName Function
 
+const userName = accs => {
+  accs.forEach(acc => {
+    const username = acc.owner
+      .toLocaleLowerCase()
+      .split(' ')
+      .map(n => n[0])
+      .join('');
+
+    acc.userName = username;
+  });
+};
+
+userName(accounts);
+
 // !=========================
 
 // Todo Calculating & Printing Total Balance
@@ -98,13 +112,35 @@ const balanceCalc = mov => {
 
 // todo Deposit, Withdrwal & Interest Balance Functions
 
+// ? Deposit Summary & display >=>
+
 const despositSum = mov => {
-  mov.filter(mov > 0);
+  const deposit = mov.filter(mov => mov > 0).reduce((acc, cur) => acc + cur, 0);
+  labelSumIn.textContent = `${deposit}€`;
 };
 
-// ! ======================
+despositSum(account1.movements);
 
 // ! ======================
+// ? Withdrwal Summary & display >=>
+
+const withdrawalSum = mov => {
+  const withdrawal = mov
+    .filter(mov => mov < 0)
+    .reduce((acc, cur) => acc + cur, 0);
+  labelSumOut.textContent = `${withdrawal}€`;
+};
+
+withdrawalSum(account1.movements);
+
+// ! ======================
+// ? InterestRate calc & display
+
+const calcInterest = accs => {
+  accs.forEach(acc => {
+    acc.interestRate;
+  });
+};
 
 // ! ======================
 
