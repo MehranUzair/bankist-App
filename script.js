@@ -164,6 +164,23 @@ btnLogin.addEventListener('click', e => {
   }
 });
 
+// todo Transfer Money into Other accounts
+
+// btnTransfer.addEventListener('click', e => {
+//   e.preventDefault();
+//   const amount = Math.abs(inputTransferAmount.value);
+//   const recieverAcc = accounts.find(
+//     acc => acc.userName === inputTransferTo.value
+//   );
+//   if (recieverAcc) {
+//     recieverAcc.movements.push(amount);
+//     Number(currentAccount.movements.push(amount));
+//   }
+//   console.log(amount, recieverAcc, currentAccount);
+
+//   balanceCalc(currentAccount.movements);
+// });
+
 // *Challenges Below ⬇️⬇️⬇️
 
 /* 
