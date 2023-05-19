@@ -1,6 +1,5 @@
 'use strict';
 // BANKIST APP
-
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -25,13 +24,13 @@ const account3 = {
 
 const account4 = {
   owner: 'Sarah Smith',
-  movements: [430, 1000, 700, 50, 90],
+  movements: [430, -1000, 700, -50, 90],
   interestRate: 1,
   pin: 4444,
 };
 const account5 = {
   owner: 'Mehran Uzair',
-  movements: [430, 5000, -10000, 50, 90, -1500, 50000],
+  movements: [50, -100, 500, 460, -90, -150, 1000],
   interestRate: 1,
   pin: 5555,
 };
@@ -82,14 +81,13 @@ const displayMovements = movements => {
   });
 };
 
-displayMovements(account1.movements);
 // ! ========================================== ;
 // Todo Creating UserName Function
 
 const userName = accs => {
   accs.forEach(acc => {
     const username = acc.owner
-      .toLocaleLowerCase()
+      .toLowerCase()
       .split(' ')
       .map(n => n[0])
       .join('');
@@ -104,47 +102,67 @@ userName(accounts);
 
 // Todo Calculating & Printing Total Balance
 
-const balanceCalc = mov => {
-  mov.reduce((acc, cur) => acc + cur, 0);
+const balanceCalc = movements => {
+  const balance = movements.reduce((acc, cur) => acc + cur, 0);
+  labelBalance.textContent = `${balance}€`;
 };
 
 // !==========================
 
 // todo Deposit, Withdrwal & Interest Balance Functions
 
-// ? Deposit Summary & display >=>
-
 const despositSum = mov => {
   const deposit = mov.filter(mov => mov > 0).reduce((acc, cur) => acc + cur, 0);
   labelSumIn.textContent = `${deposit}€`;
 };
 
-despositSum(account1.movements);
-
-// ! ======================
-// ? Withdrwal Summary & display >=>
-
 const withdrawalSum = mov => {
   const withdrawal = mov
     .filter(mov => mov < 0)
     .reduce((acc, cur) => acc + cur, 0);
-  labelSumOut.textContent = `${withdrawal}€`;
+  labelSumOut.textContent = `${Math.abs(withdrawal)}€`;
 };
 
-withdrawalSum(account1.movements);
+const calcInterest = acc => {
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(mov => (mov * acc.interestRate) / 100)
+    .filter(mov => mov > 1)
+    .reduce((acc, mov) => acc + mov, 0);
 
-// ! ======================
-// ? InterestRate calc & display
-
-const calcInterest = accs => {
-  accs.forEach(acc => {
-    acc.interestRate;
-  });
+  labelSumInterest.textContent = `${Math.floor(interest)}€`;
 };
 
 // ! ======================
 
-// Todo Login Functionality
+// Todo Login Functionality Event Handler
+
+let currentAccount;
+btnLogin.addEventListener('click', e => {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    acc => acc.userName === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent = `Welcome Back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 1;
+
+    // Functionality
+
+    balanceCalc(currentAccount.movements);
+    withdrawalSum(currentAccount.movements);
+    despositSum(currentAccount.movements);
+    calcInterest(currentAccount);
+    displayMovements(currentAccount.movements);
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+  } else {
+    alert('Wrong UserID or Password :( Try the Correct one :)');
+  }
+});
 
 // *Challenges Below ⬇️⬇️⬇️
 
