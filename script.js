@@ -63,7 +63,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-//Todo Display Movements Function
+//Todo => Display Movements Function
 
 const displayMovements = movements => {
   containerMovements.innerHTML = '';
@@ -82,7 +82,7 @@ const displayMovements = movements => {
 };
 
 // ! ========================================== ;
-// Todo Creating UserName Function
+// Todo => Creating UserName Function
 
 const userName = accs => {
   accs.forEach(acc => {
@@ -100,7 +100,7 @@ userName(accounts);
 
 // !=========================
 
-// Todo Calculating & Printing Total Balance
+// todo => Calculating & Printing Total Balance
 
 const balanceCalc = acc => {
   const balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
@@ -110,7 +110,7 @@ const balanceCalc = acc => {
 
 // !==========================
 
-// todo Deposit, Withdrwal & Interest Balance Functions
+// todo => Deposit, Withdrwal & Interest Balance Functions
 
 const despositSum = mov => {
   const deposit = mov.filter(mov => mov > 0).reduce((acc, cur) => acc + cur, 0);
@@ -135,8 +135,15 @@ const calcInterest = acc => {
 };
 
 // ! ======================
+const updateUI = acc => {
+  balanceCalc(acc);
+  withdrawalSum(acc.movements);
+  despositSum(acc.movements);
+  calcInterest(acc);
+  displayMovements(acc.movements);
+};
 
-// Todo Login Functionality Event Handler
+// todo => Login Functionality Event Handler
 
 let currentAccount;
 btnLogin.addEventListener('click', e => {
@@ -152,12 +159,7 @@ btnLogin.addEventListener('click', e => {
     containerApp.style.opacity = 1;
 
     // Functionality
-
-    balanceCalc(currentAccount.movements);
-    withdrawalSum(currentAccount.movements);
-    despositSum(currentAccount.movements);
-    calcInterest(currentAccount);
-    displayMovements(currentAccount.movements);
+    updateUI(currentAccount);
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
   } else {
@@ -165,7 +167,7 @@ btnLogin.addEventListener('click', e => {
   }
 });
 
-// todo Transfer Money into Other accounts
+// todo => Transfer Money into Other accounts
 
 btnTransfer.addEventListener('click', e => {
   e.preventDefault();
@@ -173,7 +175,24 @@ btnTransfer.addEventListener('click', e => {
   const recieverAcc = accounts.find(
     acc => acc.userName === inputTransferTo.value
   );
+  inputTransferTo.value = inputTransferAmount.value = '';
+  inputTransferAmount.blur();
+
+  if (
+    recieverAcc &&
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    recieverAcc?.userName !== currentAccount.userName
+  ) {
+    currentAccount.movements.push(-amount);
+    recieverAcc.movements.push(amount);
+    updateUI(currentAccount);
+  } else {
+    alert('username wrong or Limit Exeeded');
+  }
 });
+
+// todo => Close Account Functionality.
 
 // *Challenges Below ⬇️⬇️⬇️
 
