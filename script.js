@@ -102,9 +102,10 @@ userName(accounts);
 
 // Todo Calculating & Printing Total Balance
 
-const balanceCalc = movements => {
-  const balance = movements.reduce((acc, cur) => acc + cur, 0);
+const balanceCalc = acc => {
+  const balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
   labelBalance.textContent = `${balance}€`;
+  acc.balance = balance;
 };
 
 // !==========================
@@ -172,13 +173,6 @@ btnTransfer.addEventListener('click', e => {
   const recieverAcc = accounts.find(
     acc => acc.userName === inputTransferTo.value
   );
-  if (recieverAcc) {
-    recieverAcc.movements.push(amount);
-    Number(currentAccount.movements.push('-' + amount));
-  }
-  console.log(amount, recieverAcc, currentAccount);
-
-  balanceCalc(currentAccount.movements);
 });
 
 // *Challenges Below ⬇️⬇️⬇️
