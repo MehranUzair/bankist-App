@@ -17,14 +17,14 @@ const account2 = {
 
 const account3 = {
   owner: 'Steven Thomas Williams',
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  movements: [2000, -1200, 1340, -300, -200, 1050, 4400, -460],
   interestRate: 0.7,
   pin: 3333,
 };
 
 const account4 = {
   owner: 'Sarah Smith',
-  movements: [430, -1000, 700, -50, 90],
+  movements: [430, -1000, 700, -500, 90, 1460, -90, -150, 1000],
   interestRate: 1,
   pin: 4444,
 };
@@ -192,7 +192,22 @@ btnTransfer.addEventListener('click', e => {
     alert('username wrong or Limit Exeeded');
   }
 });
+// todo => Loan Functionality.
 
+btnLoan.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = inputLoanAmount.value;
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    currentAccount.movements.push(Number(amount));
+    updateUI(currentAccount);
+    inputLoanAmount.value = '';
+    inputLoanAmount.blur();
+  } else {
+    alert('Amount is not Eligible for loan');
+  }
+});
+
+// !=======================================
 // todo => Close Account Functionality.
 
 btnClose.addEventListener('click', e => {
