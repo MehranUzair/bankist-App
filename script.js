@@ -163,7 +163,7 @@ btnLogin.addEventListener('click', e => {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
   } else {
-    alert('Wrong UserID or Password :( Try the Correct one :)');
+    alert('Wrong UserID or Password || User doesnt Exist');
   }
 });
 
@@ -187,6 +187,7 @@ btnTransfer.addEventListener('click', e => {
     currentAccount.movements.push(-amount);
     recieverAcc.movements.push(amount);
     updateUI(currentAccount);
+    alert(`Transferd Successfully`);
   } else {
     alert('username wrong or Limit Exeeded');
   }
@@ -194,11 +195,27 @@ btnTransfer.addEventListener('click', e => {
 
 // todo => Close Account Functionality.
 
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+  if (
+    inputCloseUsername.value === currentAccount.userName &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const currAccIndex = accounts.findIndex(acc => acc === currentAccount);
+
+    accounts.splice(currAccIndex, 1);
+    containerApp.style.opacity = 0;
+    labelWelcome.textContent = 'Log in to get started';
+    inputCloseUsername.value = inputClosePin.value = '';
+  } else {
+    alert(`You can only delete your own account`);
+  }
+});
+
 // *Challenges Below ⬇️⬇️⬇️
 
 /* 
-  ? Coding Challenge => 1;
-
+  ! Coding Challenge => 1; 
 Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners about their dog's age, and stored the data into an array (one array for each). For now, they are just interested in knowing whether a dog is an adult or a puppy. A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
 
 Create a function 'checkDogs', which accepts 2 arrays of dog's ages ('dogsJulia' and 'dogsKate'), and does the following things:
@@ -237,7 +254,7 @@ GOOD LUCK 😀
 // };
 // checkDogs(juliaData, kateData);
 
-//? Coding Challenge #2
+//! Coding Challenge #2
 
 /* 
 Let's go back to Julia and Kate's study about dogs. This time, they want to convert dog ages to human ages and calculate the average age of the dogs in their study.
