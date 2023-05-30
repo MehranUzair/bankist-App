@@ -17,8 +17,8 @@ const account1 = {
     '2023-05-26T00:00:00.000Z',
     '2023-05-27T00:00:00.000Z',
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: 'USD',
+  locale: 'en-US',
 };
 
 const account2 = {
@@ -37,8 +37,8 @@ const account2 = {
     '2023-05-26T00:00:00.000Z',
     '2023-05-27T00:00:00.000Z',
   ],
-  currency: 'USD',
-  locale: 'en-US',
+  currency: 'EUR',
+  locale: 'pt-PT', // de-DE
 };
 
 const accounts = [account1, account2];
@@ -69,27 +69,23 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// todo => Time Formating
+// todo => Time Formating <=<
 
-const timeFormate = date => {
+const timeFormate = (date, locale) => {
   const dateToday = new Date();
   const dayPassed = (now, movDate) =>
     Math.ceil(Math.abs(+now - +movDate) / (1000 * 60 * 60 * 24));
 
   const passed = dayPassed(dateToday, date);
-  const day = `${date.getDate()}`.padStart(2, 0);
-  const month = `${date.getMonth() + 1}`.padStart(2, 0);
-  const year = date.getFullYear();
-
   if (passed === 1) {
     return 'Today';
   } else if (passed > 1 && passed <= 5) {
     return `${passed} days ago`;
   } else {
-    return `${day} - ${month} - ${year}`;
+    return new Intl.DateTimeFormat(locale).format(date);
   }
 };
-//Todo => Display Movements Function
+//Todo => Display Movements Function <=<
 
 const displayMovements = (acc, sort = false) => {
   containerMovements.innerHTML = '';
@@ -98,16 +94,20 @@ const displayMovements = (acc, sort = false) => {
   const movs = sort ? acc.movements.slice().sort(sortArr) : acc.movements;
   movs.forEach((mov, i) => {
     const date = new Date(acc.movementsDates[i]);
-    const showDate = timeFormate(date);
+    const showDate = timeFormate(date, acc.locale);
 
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const formatedCur = new Intl.NumberFormat(acc.locale, {
+      style: 'currency',
+      currency: acc.currency,
+    }).format(mov);
 
     const html = `<div class="movements__row">
             <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
             <div class="movements__date">${showDate}</div>
-            <div class="movements__value">${mov.toFixed(2)}</div>
+            <div class="movements__value">${formatedCur}</div>
           </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -136,7 +136,11 @@ userName(accounts);
 
 const balanceCalc = acc => {
   const balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${balance.toFixed(2)}€`;
+  const intlBalance = new Intl.NumberFormat(acc.locale, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(balance);
+  labelBalance.textContent = intlBalance;
   acc.balance = balance;
 };
 
@@ -144,16 +148,28 @@ const balanceCalc = acc => {
 
 // todo => Deposit, Withdrwal & Interest Balance Functions
 
-const despositSum = mov => {
-  const deposit = mov.filter(mov => mov > 0).reduce((acc, cur) => acc + cur, 0);
-  labelSumIn.textContent = `${deposit.toFixed(2)}€`;
+const despositSum = acc => {
+  const deposit = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, cur) => acc + cur, 0);
+  const formatedDeposit = new Intl.NumberFormat(acc.locale, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(deposit);
+  labelSumIn.textContent = formatedDeposit;
 };
 
-const withdrawalSum = mov => {
-  const withdrawal = mov
+const withdrawalSum = acc => {
+  const withdrawal = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, cur) => acc + cur, 0);
-  labelSumOut.textContent = `${Math.abs(withdrawal.toFixed(2))}€`;
+
+  const formatedWith = new Intl.NumberFormat(acc.locale, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(withdrawal);
+
+  labelSumOut.textContent = formatedWith;
 };
 
 const calcInterest = acc => {
@@ -163,27 +179,35 @@ const calcInterest = acc => {
     .filter(mov => mov > 1)
     .reduce((acc, mov) => acc + mov, 0);
 
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  const filteredInt = new Intl.NumberFormat(acc.locale, {
+    style: 'currency',
+    currency: acc.currency,
+  }).format(interest);
+
+  labelSumInterest.textContent = filteredInt;
 };
 
-const rightNow = new Date();
+let rightNow = new Date();
+const options = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  weekday: 'long',
+  hour: 'numeric',
+  minute: 'numeric',
+};
 
-const showDateTime = () => {
-  const now = new Date();
-  const day = `${now.getDate()}`.padStart(2, 0);
-  const month = `${now.getMonth() + 1}`.padStart(2, 0);
-  const year = now.getFullYear();
-  const min = `${now.getMinutes()}`.padStart(2, 0);
-  const hours = now.getHours();
-
-  labelDate.textContent = `${day} - ${month} - ${year}, ${hours} : ${min}`;
+const showDateTime = code => {
+  labelDate.textContent = new Intl.DateTimeFormat(code.locale, options).format(
+    rightNow
+  );
 };
 
 // ! ======================
 const updateUI = acc => {
   balanceCalc(acc);
-  withdrawalSum(acc.movements);
-  despositSum(acc.movements);
+  withdrawalSum(acc);
+  despositSum(acc);
   calcInterest(acc);
   displayMovements(acc);
 };
@@ -193,7 +217,6 @@ const updateUI = acc => {
 let currentAccount;
 btnLogin.addEventListener('click', e => {
   e.preventDefault();
-  showDateTime();
   currentAccount = accounts.find(
     acc => acc.userName === inputLoginUsername.value
   );
@@ -208,6 +231,7 @@ btnLogin.addEventListener('click', e => {
     updateUI(currentAccount);
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+    showDateTime(currentAccount);
   } else {
     alert('Wrong UserID or Password || User doesnt Exist');
   }
@@ -286,3 +310,10 @@ btnSort.addEventListener('click', e => {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
+
+const num = 554488965547.36;
+
+console.log('US    ', new Intl.NumberFormat('en-US').format(num));
+console.log('UK    ', new Intl.NumberFormat('en-UK').format(num));
+console.log('KSA    ', new Intl.NumberFormat('ar-SA').format(num));
+console.log('Spain    ', new Intl.NumberFormat('es-SP').format(num));
