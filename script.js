@@ -271,11 +271,15 @@ btnLoan.addEventListener('click', e => {
   e.preventDefault();
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    currentAccount.movements.push(+amount);
-    currentAccount.movementsDates.push(new Date().toISOString());
-    updateUI(currentAccount);
-    inputLoanAmount.value = '';
-    inputLoanAmount.blur();
+    document.querySelector('.loader').classList.remove('hidden');
+    setTimeout(() => {
+      currentAccount.movements.push(+amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      updateUI(currentAccount);
+      inputLoanAmount.value = '';
+      inputLoanAmount.blur();
+      document.querySelector('.loader').classList.add('hidden');
+    }, 2000);
   } else {
     alert('Amount is not Eligible for loan');
   }
