@@ -310,10 +310,3 @@ btnSort.addEventListener('click', e => {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
-
-const num = 554488965547.36;
-
-console.log('US    ', new Intl.NumberFormat('en-US').format(num));
-console.log('UK    ', new Intl.NumberFormat('en-UK').format(num));
-console.log('KSA    ', new Intl.NumberFormat('ar-SA').format(num));
-console.log('Spain    ', new Intl.NumberFormat('es-SP').format(num));
