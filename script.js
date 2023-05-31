@@ -343,3 +343,5 @@ btnSort.addEventListener('click', e => {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
+
+// Project completed Finaly
