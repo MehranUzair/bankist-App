@@ -212,9 +212,32 @@ const updateUI = acc => {
   displayMovements(acc);
 };
 
+const countdown = () => {
+  let time = 540;
+
+  const tick = () => {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(Math.trunc(time % 60)).padStart(2, 0);
+
+    labelTimer.textContent = `${min}:${sec}`;
+
+    if (time === 0) {
+      clearInterval(countDownFn);
+
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+    }
+    time--;
+  };
+  tick();
+  const countDownFn = setInterval(tick, 1000);
+
+  return countDownFn;
+};
+
 // todo => Login Functionality Event Handler
 
-let currentAccount;
+let currentAccount, timer;
 btnLogin.addEventListener('click', e => {
   e.preventDefault();
   currentAccount = accounts.find(
@@ -228,6 +251,8 @@ btnLogin.addEventListener('click', e => {
     containerApp.style.opacity = 1;
 
     // Functionality
+    if (timer) clearInterval(timer);
+    timer = countdown();
     updateUI(currentAccount);
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
@@ -260,6 +285,8 @@ btnTransfer.addEventListener('click', e => {
     currentAccount.movementsDates.push(new Date().toISOString());
     recieverAcc.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
+    clearInterval(timer);
+    timer = countdown();
     alert(`Transferd Successfully`);
   } else {
     alert('username wrong or Limit Exeeded');
@@ -279,6 +306,8 @@ btnLoan.addEventListener('click', e => {
       inputLoanAmount.value = '';
       inputLoanAmount.blur();
       document.querySelector('.loader').classList.add('hidden');
+      clearInterval(timer);
+      timer = countdown();
     }, 2000);
   } else {
     alert('Amount is not Eligible for loan');
